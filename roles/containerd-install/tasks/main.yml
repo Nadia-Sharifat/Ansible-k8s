@@ -1,18 +1,17 @@
 ---
-- name: containerd-installation-on-workers
-  tasks:
-  - name: swapp off
-    replace:
+- name: swapp off
+  replace:
     path: "/etc/fstab"
     regexp: "/swap.img"
     replace: "#/swap.img"
     backup: yes
 
-  - name: install keyrings on /etc/apt/keyrings
-    shell: "install -m 0755 -d /etc/apt/keyrings"
+- name: install keyrings on /etc/apt/keyrings
+  shell: "install -m 0755 -d /etc/apt/keyrings"
 
-  - name: Remove existing content from resolv.conf
-    lineinfile:
-      path: /etc/resolv.conf
-      regexp: ".*"
-      state: absent
+- name: Remove existing content from resolv.conf
+  lineinfile:
+    path: /etc/resolv.conf
+    regexp: ".*"
+    state: absent
+

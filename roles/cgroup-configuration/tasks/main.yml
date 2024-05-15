@@ -1,17 +1,16 @@
 ---
-- name: cgreoup configuration and reload containerd
-  tasks:
-    - name: Set SystemdCgroup to true in /etc/containerd/config.toml
-      lineinfile:
-        path: "/etc/containerd/config.toml"
-        regexp: "^\\s*SystemdCgroup\\s*=\\s*false"
-        line: "SystemdCgroup = true"
+# cgreoup configuration and reload containerd
+- name: Set SystemdCgroup to true in /etc/containerd/config.toml
+  lineinfile:
+    path: "/etc/containerd/config.toml"
+    regexp: "^\\s*SystemdCgroup\\s*=\\s*false"
+    line: "SystemdCgroup = true"
         
-    - name: Reload systemd daemon
-      systemd:
-        daemon_reload: yes
+- name: Reload systemd daemon
+  systemd:
+    daemon_reload: yes
 
-    - name: Restart containerd service
-      systemd:
-        name: containerd
-        state: restarted
+- name: Restart containerd service
+  systemd:
+    name: containerd
+    state: restarted
