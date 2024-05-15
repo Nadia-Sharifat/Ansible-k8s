@@ -2,8 +2,6 @@
 
 # tasks file for containerd-install
 - name: containerd installation on workers
-  hosts: all
-  become: yes
   
   tasks:
     - name: swapp off
