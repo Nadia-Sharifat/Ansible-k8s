@@ -1,25 +1,16 @@
----  
-- name: containerd installation on workers
+---
+- name: Installing containerd on workers
   hosts: all
-  roles: containerd-install
+  roles:
+    - containerd-install
 
-        
-    - name: Set SystemdCgroup to true in /etc/containerd/config.toml
-      lineinfile:
-        path: "/etc/containerd/config.toml"
-        regexp: "^\\s*SystemdCgroup\\s*=\\s*false"
-        line: "SystemdCgroup = true"
-        
-    - name: Reload systemd daemon
-      systemd:
-        daemon_reload: yes
+- name: Set SystemdCgroup to true in /etc/containerd/config.toml
+  hosts: all
+  roles:
+    - cgroup-configuration
 
-    - name: Restart containerd service
-      systemd:
-        name: containerd
-        state: restarted
-        
- - name: Installing K8S (kubeadm,kubelet&kubectl)on all nodes:
-   hosts: all
-   roles: k8s-install
-    
+- name: Installing K8S (kubeadm, kubelet, kubectl) on all nodes
+  hosts: all
+  roles:
+    - k8s-install
+

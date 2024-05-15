@@ -1,55 +1,18 @@
 ---
-
-# tasks file for containerd-install
-- name: containerd installation on workers
-  
+- name: containerd-installation-on-workers
   tasks:
-    - name: swapp off
-      replace:
-        path: "/etc/fstab"
-        regexp: "/swap.img"
-        replace: "#/swap.img"
-        backup: yes
-      
-    # Tasks for installing containerd.io
+  - name: swapp off
+    replace:
+    path: "/etc/fstab"
+    regexp: "/swap.img"
+    replace: "#/swap.img"
+    backup: yes
 
-    - name: install keyrings on /etc/apt/keyrings
-      shell: "install -m 0755 -d /etc/apt/keyrings"
-      
-    - name: Remove existing content from resolv.conf
-      lineinfile:
-        path: /etc/resolv.conf
-        regexp: ".*" 
-        state: absent
+  - name: install keyrings on /etc/apt/keyrings
+    shell: "install -m 0755 -d /etc/apt/keyrings"
 
-    - name: Add Shekan nameserver to resolv.conf
-      lineinfile:
-        path: /etc/resolv.conf
-        line: "nameserver 178.22.122.100"
-        create: yes
-      
-    - name: Download Docker GPG key
-      get_url:
-        url: "https://download.docker.com/linux/ubuntu/gpg"
-        dest: "/etc/apt/keyrings/docker.asc"
-        mode: "0644"
-        
-    - name: Set permissions for Docker GPG key
-      file:
-        path: "/etc/apt/keyrings/docker.asc"
-        mode: "a+r"
-
-    - name: Add Docker repository line to sources.list
-      shell: |
-        echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo $VERSION_CODENAME) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-      ignore_errors: yes
-
-    - name: Run apt update
-      apt:
-        update_cache: yes
-        
-    - name: Containerd.io installation
-      apt:
-        name: containerd.io
-        state: present
-
+  - name: Remove existing content from resolv.conf
+    lineinfile:
+      path: /etc/resolv.conf
+      regexp: ".*"
+      state: absent
